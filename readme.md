@@ -47,3 +47,4 @@ Este proyecto es un ejercicio de laboratorio para estudiantes donde se implement
 - RecyclerView
 - Fragments
 - Material Design Components
+
