@@ -12,7 +12,7 @@ class ReposViewHolder(private val binding: FragmentRepoItemBinding) :
     fun bind(repo: Repo) {
         binding.repoName.text = repo.name
         binding.repoDescription.text = repo.description
-        binding.repoLang.text = repo.languajes
+        binding.repoLang.text = repo.language
         Glide.with(binding.root.context)
             .load(repo.owner.avatarUrl)
             .placeholder(R.mipmap.ic_launcher)
