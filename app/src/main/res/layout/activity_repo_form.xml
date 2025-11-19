@@ -15,58 +15,68 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
             android:id="@+id/repo_name_input"
-            android:hint="@string/repo_name" />
-
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:maxLines="8"
-            android:id="@+id/repo_description_input"
-            android:hint="@string/repo_description" />
+            android:hint="@string/repo_name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textColorHint="#546E7A"
+            tools:ignore="VisualLintTextFieldSize" />
 
+        <EditText
+            android:id="@+id/repo_description_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/repo_description"
+            android:inputType="textMultiLine"
+            android:maxLines="8"
+            android:minLines="3"
+            android:textColorHint="#546E7A"
+            tools:ignore="VisualLintTextFieldSize" />
+
+        <EditText
+            android:id="@+id/repo_language_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Lenguaje del repositorio"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:textColorHint="#546E7A"
+            android:layout_marginTop="12dp"
+            tools:ignore="VisualLintTextFieldSize" />
 
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="24dp"
-
-            >
+            android:layout_marginTop="24dp">
 
             <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:id="@+id/cancel_button"
-                android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                />
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textColor="#0277BD"
+                tools:ignore="VisualLintButtonSize" />
 
             <Button
                 android:id="@+id/save_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/uisek_blue"
-                android:text="@string/save"/>
-
-
+                android:text="@string/save"
+                android:textColor="#212121"
+                tools:ignore="VisualLintButtonSize" />
         </LinearLayout>
-
-
-
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

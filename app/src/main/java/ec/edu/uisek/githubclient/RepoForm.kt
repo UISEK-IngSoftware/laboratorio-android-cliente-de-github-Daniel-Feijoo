@@ -1,5 +1,6 @@
 package ec.edu.uisek.githubclient
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,60 +17,72 @@ class RepoForm : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityRepoFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.cancelButton.setOnClickListener {
-            finish()
-        }
-
+        binding.cancelButton.setOnClickListener { finish() }
         binding.saveButton.setOnClickListener { createRepo() }
     }
 
-    private fun validateForm(): Boolean {
+    private fun validationForm(): Boolean {
         val repoName = binding.repoNameInput.text.toString()
+        val repoLanguage = binding.repoLanguageInput.text.toString()
+
+        var isValid = true
+
         if (repoName.isBlank()) {
-            binding.repoNameInput.error = "El nombre del repositorio es obligatorio"
-            return false
+            binding.repoNameInput.error = "El nombre no puede estar vacío."
+            isValid = false
+        } else {
+            binding.repoNameInput.error = null
         }
-        if (repoName.contains(" ")) {
-            binding.repoNameInput.error = "El nombre del repositorio no puede contener espacios"
-            return false
+
+        if (repoLanguage.isBlank()) {
+            binding.repoLanguageInput.error = "El lenguaje no puede estar vacío."
+            isValid = false
+        } else {
+            binding.repoLanguageInput.error = null
         }
-        binding.repoNameInput.error = null
-        return true
+
+        return isValid
     }
 
     private fun createRepo() {
-        if (!validateForm()) {
-            return
-        }
+        if (!validationForm()) return
 
         val repoName = binding.repoNameInput.text.toString().trim()
         val repoDescription = binding.repoDescriptionInput.text.toString().trim()
+        val repoLanguage = binding.repoLanguageInput.text.toString().trim()
 
-        val repoRequest = RepoRequest(repoName, repoDescription)
-        val apiService = RetrofitClient.gitHubApiService
-        val call = apiService.addRepo(repoRequest)
+        val repoRequest = RepoRequest(
+            name = repoName,
+            description = repoDescription,
+            language = repoLanguage,
+            private = false
+        )
 
-        call.enqueue(object : Callback<Repo> {
-            override fun onResponse(call: Call<Repo>, response: Response<Repo>) {
-                if (response.isSuccessful) {
-                    showMessage("Repositorio creado exitosamente")
-                    finish()
-                } else {
-                    val errorMessage = when (response.code()) {
-                        422 -> "El repositorio ya existe o el nombre es inválido."
-                        else -> "Error al crear el repositorio: ${response.code()}"
+        RetrofitClient.gitHubApiService.createRepo(repoRequest)
+            .enqueue(object : Callback<Repo> {
+                override fun onResponse(call: Call<Repo>, response: Response<Repo>) {
+                    if (response.isSuccessful) {
+                        val createdRepo = response.body()
+                        if (createdRepo != null) {
+                            val resultIntent = Intent()
+                            resultIntent.putExtra("newRepo", createdRepo)
+                            setResult(RESULT_OK, resultIntent)
+                            showMessage("Repositorio creado en GitHub")
+                            finish()
+                        }
+                    } else {
+                        showMessage("Error al crear: ${response.code()}")
                     }
-                    showMessage(errorMessage)
                 }
-            }
 
-            override fun onFailure(call: Call<Repo>, t: Throwable) {
-                showMessage("Error de red: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<Repo>, t: Throwable) {
+                    showMessage("Error de red al crear repositorio")
+                }
+            })
     }
 
     private fun showMessage(message: String) {

@@ -7,6 +7,5 @@
     <string name="text_lang">Kotlin</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Guardar</string>
-
-
+    <string name="todo">Imagen del propietario del repositorio</string>
 </resources>
