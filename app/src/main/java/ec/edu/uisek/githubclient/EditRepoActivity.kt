@@ -38,11 +38,11 @@ class EditRepoActivity : AppCompatActivity() {
                 language = newLanguage
             )
 
-            RetrofitClient.gitHubApiService.updateRepo(
+            RetrofitClient.getApiService()?.updateRepo(
                 owner = originalRepo.owner.login,
                 repoName = originalRepo.name,
                 repoRequest = repoRequest
-            ).enqueue(object : Callback<Repo> {
+            )?.enqueue(object : Callback<Repo> {
                 override fun onResponse(call: Call<Repo>, response: Response<Repo>) {
                     if (response.isSuccessful) {
                         val updatedRepo = response.body()

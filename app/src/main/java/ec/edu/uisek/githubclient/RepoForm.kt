@@ -62,8 +62,8 @@ class RepoForm : AppCompatActivity() {
             private = false
         )
 
-        RetrofitClient.gitHubApiService.createRepo(repoRequest)
-            .enqueue(object : Callback<Repo> {
+        RetrofitClient.getApiService()?.createRepo(repoRequest)
+            ?.enqueue(object : Callback<Repo> {
                 override fun onResponse(call: Call<Repo>, response: Response<Repo>) {
                     if (response.isSuccessful) {
                         val createdRepo = response.body()

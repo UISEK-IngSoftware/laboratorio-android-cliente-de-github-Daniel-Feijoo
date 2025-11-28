@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, EDIT_REPO_REQUEST)
             },
             onDelete = { repo ->
-                RetrofitClient.gitHubApiService.deleteRepo(repo.owner.login, repo.name)
-                    .enqueue(object : Callback<Void> {
+                RetrofitClient.getApiService()?.deleteRepo(repo.owner.login, repo.name)
+                    ?.enqueue(object : Callback<Void> {
                         override fun onResponse(call: Call<Void>, response: Response<Void>) {
                             if (response.isSuccessful) {
                                 saveDeletedRepoId(repo.id)
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     private fun fetchRepositories() {
         val deletedIds = getDeletedRepoIds()
 
-        RetrofitClient.gitHubApiService.getRepos().enqueue(object : Callback<List<Repo>> {
+        RetrofitClient.getApiService()?.getRepos()?.enqueue(object : Callback<List<Repo>> {
             override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
                 if (response.isSuccessful) {
                     val repos = response.body()?.filterNot { deletedIds.contains(it.id.toString()) } ?: emptyList()

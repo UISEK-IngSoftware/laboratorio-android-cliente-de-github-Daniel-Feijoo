@@ -32,7 +32,7 @@ class RepoFormActivity : AppCompatActivity() {
 
             val request = RepoRequest(name, description, language)
 
-            RetrofitClient.gitHubApiService.createRepo(request).enqueue(object : Callback<Repo> {
+            RetrofitClient.getApiService()?.createRepo(request)?.enqueue(object : Callback<Repo> {
                 override fun onResponse(call: Call<Repo>, response: Response<Repo>) {
                     if (response.isSuccessful) {
                         val newRepo = response.body()
